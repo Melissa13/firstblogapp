@@ -1,0 +1,22 @@
+{
+  "name": "firstblogapp",
+  "version": "1.0.0",
+  "description": "practice app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Melissa13/firstblogapp.git"
+  },
+  "author": "melissa lantigua",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Melissa13/firstblogapp/issues"
+  },
+  "homepage": "https://github.com/Melissa13/firstblogapp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
