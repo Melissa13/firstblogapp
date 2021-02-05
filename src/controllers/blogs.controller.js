@@ -1,45 +1,45 @@
 const db = require("../models");
+const Blogs = db.blogs;
 const Users = db.users;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new blog
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.name) {
+    if (!req.body.title) {
       res.status(400).send({
-        message: "user cant be null!...use your brain!"
+        message: "blog cant be null!...use your brain!"
       });
       return;
     }
   
-    // Create a user
-    const user = {
-      name: req.body.name,
-      lastName: req.body.lastName,
-      country: req.body.country,
-      role: req.body.role,
-      adult: req.body.adult ? req.body.adult : false
+    // Create a blog
+    const blog = {
+      title: req.body.title,
+      description: req.body.description,
+      published: req.body.published ? req.body.published : false,
+      userId: req.body.userId
     };
   
-    // Save user in the database
-    Users.create(user)
+    // Save blog in the database
+    Blogs.create(blog)
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "creation of the user failed... what did you do wrong now?"
+            err.message || "creation of the blog failed... what did you do wrong now?"
         });
       });
   };
 
-// Retrieve all user from the database.
+// Retrieve all blogs from the database.
 exports.findAll = (req, res) => {
-    const name = req.query.name;
-    var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
+    const title = req.query.title;
+    var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
   
-    Users.findAll({ where: condition })
+    Blogs.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })
@@ -51,98 +51,98 @@ exports.findAll = (req, res) => {
       });
   };
 
-// Find a single user with an id
+// Find a single blog with an id
 exports.findOne = (req, res) => {
     const id = req.params.id;
   
-    Users.findByPk(id)
+    Blogs.findByPk(id)
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
-          message: "Are you sure that this user with id=" + id + " Exist?"
+          message: "Are you sure that this blog with id=" + id + " Exist?"
         });
       });
   };
 
-// Update a user by the id in the request
+// Update a blog by the id in the request
 exports.update = (req, res) => {
     const id = req.params.id;
   
-    Users.update(req.body, {
+    Blogs.update(req.body, {
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "User data updated successfully. Now the FBI can't find it"
+            message: "Blog data updated successfully. Now the FBI can't find it"
           });
         } else {
           res.send({
-            message: `Cannot update User with id=${id}. Maybe the police already get them, RUN!`
+            message: `Cannot update Blog with id=${id}. Maybe the police already find it, RUN!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating User with id=" + id
+          message: "Error updating Blog with id=" + id
         });
       });
   };
 
-// Delete a User with the specified id in the request
+// Delete a Blog with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.params.id;
   
-    Users.destroy({
+    Blogs.destroy({
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "User was deleted successfully, now the FBI can't associate it with this site!"
+            message: "Blog was deleted successfully, now the FBI can't associate it with this site!"
           });
         } else {
           res.send({
-            message: `Cannot delete User with id=${id}. Maybe user was not found, maybe is already dead... who knows...`
+            message: `Cannot delete Blog with id=${id}. Maybe blog was not found, maybe is already erased... who knows...`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Userl with id=" + id
+          message: "Could not delete Blog with id=" + id
         });
       });
   };
 
-// Delete all Users from the database.
+// Delete all Blogs from the database.
 exports.deleteAll = (req, res) => {
-    Users.destroy({
+    blogs.destroy({
       where: {},
       truncate: false
     })
       .then(nums => {
-        res.send({ message: `${nums} User were deleted successfully, it was time!` });
+        res.send({ message: `${nums} Blog were deleted successfully, it was time!` });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all users... you just can't go there killing people"
+            err.message || "Some error occurred while removing all blogs... you just can't go there erasing the evidence"
         });
       });
   };
 
-// Find all adult users
-exports.findAllAdult = (req, res) => {
-    Users.findAll({ where: { adult: true } })
+// Find all published blogs
+exports.findAllPublished = (req, res) => {
+    Blogs.findAll({ where: { published: true } })
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving users."
+            err.message || "Some error occurred while retrieving blogs."
         });
       });
   };

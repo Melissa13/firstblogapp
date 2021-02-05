@@ -1,5 +1,6 @@
 const db = require("../models");
 const Users = db.users;
+const blogs = db.blogs;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new User
@@ -56,6 +57,21 @@ exports.findOne = (req, res) => {
     const id = req.params.id;
   
     Users.findByPk(id)
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Are you sure that this user with id=" + id + " Exist?"
+        });
+      });
+  };
+
+// Find a single user with an id and blogs
+exports.findUserBlogs = (req, res) => {
+    const id = req.params.id;
+  
+    Users.findByPk(id, {include: [blogs]})
       .then(data => {
         res.send(data);
       })
