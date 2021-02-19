@@ -6,6 +6,12 @@ module.exports = (sequelize, Sequelize) => {
       lastName: {
         type: Sequelize.STRING
       },
+      email: {
+        type: Sequelize.STRING
+      },
+      password: {
+        type: Sequelize.STRING
+      },
       country: {
         type: Sequelize.STRING
       },
@@ -15,6 +21,10 @@ module.exports = (sequelize, Sequelize) => {
       },
       adult: {
         type: Sequelize.BOOLEAN
+      },
+      isDeleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       }
     });
   

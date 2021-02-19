@@ -22,7 +22,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use('/v1', indexRouter);
-require('./routes/tutorial.routes')(app);
 require('./routes/users.routes')(app);
 require('./routes/blogs.routes')(app);
 
