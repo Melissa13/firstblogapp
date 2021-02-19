@@ -1,0 +1,11 @@
+version: '3'
+services:
+  database:
+    image: "postgres" # use latest official postgres version
+    restart: always
+    env_file:
+      - .env # configure postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker/postgres/data:/var/lib/postgresql/data

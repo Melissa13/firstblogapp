@@ -6,4 +6,4 @@ yarn-error.log
 .nyc_output
 coverage
 build/
-src/config/db.config.js
+docker/**/data

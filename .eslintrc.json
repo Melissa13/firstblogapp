@@ -34,6 +34,8 @@
     "no-mixed-requires": 0,
     "no-new-require": 2,
     "no-self-compare": 2,
+    "prefer-const": 2,
+    "prefer-template": 2,
     "comma-dangle": [0],
     "arrow-parens": [0],
     "object-curly-spacing": ["warn", "always"],
