@@ -19,6 +19,8 @@ exports.create = (req, res) => {
       lastName: req.body.lastName,
       country: req.body.country,
       role: req.body.role,
+      email: req.body.email,
+      password: req.body.password,
       adult: req.body.adult ? req.body.adult : false
     };
   
