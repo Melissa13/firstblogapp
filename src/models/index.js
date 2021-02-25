@@ -18,18 +18,16 @@ const sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
   },
 });
 
-const db = {};
+const users = require('./users.model')(sequelize, Sequelize);
+const blogs = require('./blogs.model')(sequelize, Sequelize);
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
-
-db.users = require('./users.model')(sequelize, Sequelize);
-db.blogs = require('./blogs.model')(sequelize, Sequelize);
-
-db.users.hasMany(db.blogs, { as: 'blogs' });
-db.blogs.belongsTo(db.users, {
+users.hasMany(blogs, { as: 'blogs' });
+blogs.belongsTo(users, {
   foreignKey: 'userId',
   as: 'user',
 });
 
-module.exports = db;
+module.exports.Sequelize = Sequelize;
+module.exports.sequelize = sequelize;
+module.exports.users = users;
+module.exports.blogs = blogs;

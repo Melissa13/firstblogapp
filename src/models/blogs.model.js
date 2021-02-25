@@ -1,18 +1,18 @@
 module.exports = (sequelize, Sequelize) => {
   const Blogs = sequelize.define('blogs', {
     title: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING
     },
     description: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING
     },
     published: {
-      type: Sequelize.BOOLEAN,
+      type: Sequelize.BOOLEAN
     },
     isDeleted: {
       type: Sequelize.BOOLEAN,
-      defaultValue: false,
-    },
+      defaultValue: false
+    }
   });
 
   return Blogs;

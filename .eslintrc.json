@@ -1,19 +1,18 @@
 {
   "env": {
-    "browser": true,
     "es6": true,
     "node": true,
     "mocha": true
   },
   "plugins": ["prettier"],
   "extends": ["eslint:recommended", "plugin:prettier/recommended"],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
   "parserOptions": {
     "ecmaVersion": 2018,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "arrowFunctions": true
+    }
   },
   "rules": {
     "valid-jsdoc": [
@@ -26,18 +25,21 @@
     ],
     "default-case": 2,
     "indent": ["warn", 2],
-    "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"],
     "no-console": 1,
     "no-floating-decimal": 1,
     "no-mixed-requires": 0,
     "no-new-require": 2,
     "no-self-compare": 2,
+    "wrap-iife": 2,
+    "quote-props": [2, "as-needed"],
+    "no-undef": 0,
+    "no-unused-vars": 2,
+    "no-var": 2,
+    "no-const-assign": 2,
     "prefer-const": 2,
+    "space-before-blocks": [2, "always"],
+    "eol-last": [2, "always"],
     "prefer-template": 2,
-    "comma-dangle": [0],
-    "arrow-parens": [0],
     "object-curly-spacing": ["warn", "always"],
     "array-bracket-spacing": ["warn", "always"]
   }

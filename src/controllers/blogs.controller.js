@@ -1,6 +1,5 @@
 const db = require('../models');
 const Blogs = db.blogs;
-const Users = db.users;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new blog
@@ -8,7 +7,7 @@ exports.create = (req, res) => {
   // Validate request
   if (!req.body.title) {
     res.status(400).send({
-      message: 'blog cant be null!...use your brain!',
+      message: 'blog cant be null!...use your brain!'
     });
     return;
   }
@@ -18,7 +17,7 @@ exports.create = (req, res) => {
     title: req.body.title,
     description: req.body.description,
     published: req.body.published ? req.body.published : false,
-    userId: req.body.userId,
+    userId: req.body.userId
   };
 
   // Save blog in the database
@@ -28,9 +27,7 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message ||
-          'creation of the blog failed... what did you do wrong now?',
+        message: err.message || 'creation of the blog failed... what did you do wrong now?'
       });
     });
 };
@@ -38,7 +35,7 @@ exports.create = (req, res) => {
 // Retrieve all blogs from the database.
 exports.findAll = (req, res) => {
   const title = req.query.title;
-  var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
+  const condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
   Blogs.findAll({ where: condition })
     .then((data) => {
@@ -46,7 +43,7 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || 'the database is ignoring you.',
+        message: err.message || 'the database is ignoring you.'
       });
     });
 };
@@ -62,6 +59,7 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: `Are you sure that this blog with id=${id} Exist?`,
+        err
       });
     });
 };
@@ -71,22 +69,23 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   Blogs.update(req.body, {
-    where: { id: id },
+    where: { id: id }
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Blog data updated successfully. Now the FBI can't find it",
+          message: "Blog data updated successfully. Now the FBI can't find it"
         });
       } else {
         res.send({
-          message: `Cannot update Blog with id=${id}. Maybe the police already find it, RUN!`,
+          message: `Cannot update Blog with id=${id}. Maybe the police already find it, RUN!`
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
         message: `Error updating Blog with id=${id}`,
+        err
       });
     });
 };
@@ -96,23 +95,23 @@ exports.delete = (req, res) => {
   const id = req.params.id;
 
   Blogs.destroy({
-    where: { id: id },
+    where: { id: id }
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message:
-            "Blog was deleted successfully, now the FBI can't associate it with this site!",
+          message: "Blog was deleted successfully, now the FBI can't associate it with this site!"
         });
       } else {
         res.send({
-          message: `Cannot delete Blog with id=${id}. Maybe blog was not found, maybe is already erased... who knows...`,
+          message: `Cannot delete Blog with id=${id}. Maybe blog was not found, maybe is already erased... who knows...`
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
         message: `Could not delete Blog with id=${id}`,
+        err
       });
     });
 };
@@ -122,18 +121,18 @@ exports.deleteAll = (req, res) => {
   blogs
     .destroy({
       where: {},
-      truncate: false,
+      truncate: false
     })
     .then((nums) => {
       res.send({
-        message: `${nums} Blog were deleted successfully, it was time!`,
+        message: `${nums} Blog were deleted successfully, it was time!`
       });
     })
     .catch((err) => {
       res.status(500).send({
         message:
           err.message ||
-          'Some error occurred while removing all blogs... you just can\'t go there erasing the evidence',
+          "Some error occurred while removing all blogs... you just can't go there erasing the evidence"
       });
     });
 };
@@ -146,7 +145,7 @@ exports.findAllPublished = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while retrieving blogs.',
+        message: err.message || 'Some error occurred while retrieving blogs.'
       });
     });
 };

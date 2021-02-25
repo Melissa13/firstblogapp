@@ -8,7 +8,7 @@ exports.create = (req, res) => {
   // Validate request
   if (!req.body.name) {
     res.status(400).send({
-      message: 'user cant be null!...use your brain!',
+      message: 'user cant be null!...use your brain!'
     });
     return;
   }
@@ -21,7 +21,7 @@ exports.create = (req, res) => {
     role: req.body.role,
     email: req.body.email,
     password: req.body.password,
-    adult: req.body.adult ? req.body.adult : false,
+    adult: req.body.adult ? req.body.adult : false
   };
 
   // Save user in the database
@@ -31,9 +31,7 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message ||
-          'creation of the user failed... what did you do wrong now?',
+        message: err.message || 'creation of the user failed... what did you do wrong now?'
       });
     });
 };
@@ -41,7 +39,7 @@ exports.create = (req, res) => {
 // Retrieve all user from the database.
 exports.findAll = (req, res) => {
   const name = req.query.name;
-  var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
+  const condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
   Users.findAll({ where: condition })
     .then((data) => {
@@ -49,7 +47,7 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || 'the database is ignoring you.',
+        message: err.message || 'the database is ignoring you.'
       });
     });
 };
@@ -65,6 +63,7 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: `Are you sure that this user with id=${id} Exist?`,
+        err
       });
     });
 };
@@ -80,6 +79,7 @@ exports.findUserBlogs = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: `Are you sure that this user with id=${id} Exist?`,
+        err
       });
     });
 };
@@ -89,22 +89,23 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   Users.update(req.body, {
-    where: { id: id },
+    where: { id: id }
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "User data updated successfully. Now the FBI can't find it",
+          message: "User data updated successfully. Now the FBI can't find it"
         });
       } else {
         res.send({
-          message: `Cannot update User with id=${id}. Maybe the police already get them, RUN!`,
+          message: `Cannot update User with id=${id}. Maybe the police already get them, RUN!`
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
         message: `Error updating User with id=${id}`,
+        err
       });
     });
 };
@@ -114,23 +115,23 @@ exports.delete = (req, res) => {
   const id = req.params.id;
 
   Users.destroy({
-    where: { id: id },
+    where: { id: id }
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message:
-            "User was deleted successfully, now the FBI can't associate it with this site!",
+          message: 'User was deleted successfully, now the FBI can`t associate it with this site!'
         });
       } else {
         res.send({
-          message: `Cannot delete User with id=${id}. Maybe user was not found, maybe is already dead... who knows...`,
+          message: `Cannot delete User with id=${id}. Maybe user was not found, maybe is already dead... who knows...`
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
         message: `Could not delete Userl with id=${id}`,
+        err
       });
     });
 };
@@ -139,18 +140,18 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
   Users.destroy({
     where: {},
-    truncate: false,
+    truncate: false
   })
     .then((nums) => {
       res.send({
-        message: `${nums} User were deleted successfully, it was time!`,
+        message: `${nums} User were deleted successfully, it was time!`
       });
     })
     .catch((err) => {
       res.status(500).send({
         message:
           err.message ||
-          'Some error occurred while removing all users... you just can\'t go there killing people',
+          'Some error occurred while removing all users... you just can`t go there killing people'
       });
     });
 };
@@ -163,7 +164,7 @@ exports.findAllAdult = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while retrieving users.',
+        message: err.message || 'Some error occurred while retrieving users.'
       });
     });
 };

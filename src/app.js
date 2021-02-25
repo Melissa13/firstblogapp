@@ -11,8 +11,8 @@ db.sequelize.sync();
     console.log("Drop and re-sync db.");
   });*/
 
-var corsOptions = {
-  origin: 'http://localhost:8081',
+const corsOptions = {
+  origin: 'http://localhost:8081'
 };
 
 app.use(cors(corsOptions));
