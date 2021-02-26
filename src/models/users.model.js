@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     password: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING
     },
     country: {
       type: Sequelize.STRING
@@ -25,7 +25,7 @@ module.exports = (sequelize, Sequelize) => {
     isDeleted: {
       type: Sequelize.BOOLEAN,
       defaultValue: false
-    },
+    }
   });
 
   return Users;

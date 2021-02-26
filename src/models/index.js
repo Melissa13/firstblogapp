@@ -1,9 +1,4 @@
-const {
-  POSTGRES_USER,
-  POSTGRES_PASSWORD,
-  POSTGRES_DB,
-  POSTGRES_HOST,
-} = process.env;
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_HOST } = process.env;
 
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
@@ -14,8 +9,8 @@ const sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
     max: 5,
     min: 0,
     acquire: 30000,
-    idle: 10000,
-  },
+    idle: 10000
+  }
 });
 
 const users = require('./users.model')(sequelize, Sequelize);
@@ -24,7 +19,7 @@ const blogs = require('./blogs.model')(sequelize, Sequelize);
 users.hasMany(blogs, { as: 'blogs' });
 blogs.belongsTo(users, {
   foreignKey: 'userId',
-  as: 'user',
+  as: 'user'
 });
 
 module.exports.Sequelize = Sequelize;
