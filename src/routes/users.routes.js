@@ -13,7 +13,7 @@ module.exports = (app) => {
   router.get('/adults', users.findAllAdult);
 
   // Retrieve a single user with id
-  router.get('/:id', users.findUserBlogs);
+  router.get('/:id', users.findOne);
 
   // Update a Users with id
   router.put('/:id', users.update);

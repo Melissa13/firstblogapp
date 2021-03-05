@@ -20,7 +20,8 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: 'Blogger'
     },
     adult: {
-      type: Sequelize.BOOLEAN
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
     },
     isDeleted: {
       type: Sequelize.BOOLEAN,
