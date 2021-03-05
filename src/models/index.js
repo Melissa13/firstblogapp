@@ -1,31 +1,28 @@
-const dbConfig = require("../config/db.config");
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_HOST } = process.env;
 
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  operatorsAliases: false,
-
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
+  host: POSTGRES_HOST,
+  dialect: 'postgres',
+  logging: false,
   pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
   }
 });
 
-const db = {};
+const users = require('./users.model')(sequelize, Sequelize);
+const blogs = require('./blogs.model')(sequelize, Sequelize);
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
-
-db.users = require("./users.model")(sequelize, Sequelize);
-db.blogs = require("./blogs.model")(sequelize, Sequelize);
-
-db.users.hasMany(db.blogs, {as: "blogs"});
-db.blogs.belongsTo(db.users, {
-    foreignKey: "userId",
-    as: "user",
+users.hasMany(blogs, { as: 'blogs' });
+blogs.belongsTo(users, {
+  foreignKey: 'userId',
+  as: 'user'
 });
 
-module.exports = db;
+module.exports.Sequelize = Sequelize;
+module.exports.sequelize = sequelize;
+module.exports.users = users;
+module.exports.blogs = blogs;
