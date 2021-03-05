@@ -3,26 +3,20 @@ module.exports = (app) => {
 
   const router = require('express').Router();
 
-  // Create a new blog
-  router.post('/', blogs.create);
+  // Create a new User
+  router.post('/', blogs.createEntry);
 
   // Retrieve all blogs
-  router.get('/', blogs.findAll);
+  router.get('/', blogs.findAllEntries);
 
-  // Retrieve all published blogs
-  router.get('/published', blogs.findAllPublished);
-
-  // Retrieve a single blog with id
-  router.get('/:id', blogs.findOne);
+  // Retrieve a single user with id
+  router.get('/:id', blogs.findOneEntry);
 
   // Update a blogs with id
-  router.put('/:id', blogs.update);
+  router.put('/:id', blogs.updateEntry);
 
   // Delete a blogs with id
-  router.delete('/:id', blogs.delete);
-
-  // Create a new blogs
-  router.delete('/', blogs.deleteAll);
+  router.delete('/:id', blogs.deleteEntry);
 
   app.use('/api/blogs', router);
 };
