@@ -15,12 +15,9 @@ async function init() {
     }
   });
 
-  const users = require('../models/users.model')(sequelize, Sequelize);
-  const blogs = require('../models/blogs.model')(sequelize, Sequelize);
-
   models = {
-    users,
-    blogs
+    users: require('../models/users.model')(sequelize, Sequelize),
+    blogs: require('../models/blogs.model')(sequelize, Sequelize)
   };
 
   // models['users'].hasMany(models['blogs'], { as: 'blogs' });
