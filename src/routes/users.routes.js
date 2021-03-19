@@ -1,9 +1,9 @@
 const { createBasicRoutesFor } = require('./basicroutes');
 
 module.exports = (app) => {
-  const users = require('../controllers/users.controller');
+  const { users: userController } = require('../controllers/controllers');
 
-  const router = createBasicRoutesFor(users);
+  const router = createBasicRoutesFor(userController);
 
   app.use('/api/users', router);
 };
