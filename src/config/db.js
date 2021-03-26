@@ -1,6 +1,8 @@
+const glob = require('glob');
 const Sequelize = require('sequelize');
+const path = require('path');
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_HOST } = process.env;
-let models;
+const models = {};
 
 async function init() {
   const sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
@@ -15,11 +17,11 @@ async function init() {
     }
   });
 
-  models = {
-    users: require('../models/users.model')(sequelize, Sequelize),
-    blogs: require('../models/blogs.model')(sequelize, Sequelize)
-  };
+  glob.sync('**/models/*.model.js').forEach((filepath) => {
+    const modelName = getModelName(filepath);
 
+    models[modelName] = require(path.resolve(filepath))(sequelize, Sequelize);
+  });
   // models['users'].hasMany(models['blogs'], { as: 'blogs' });
   // models['blogs'].belongsTo(models['users'], {
   //   foreignKey: 'userId',
@@ -33,6 +35,10 @@ async function init() {
 
 function getModel(modelName) {
   return models[modelName];
+}
+
+function getModelName(filepath) {
+  return filepath.split('/').pop().split('.')[0];
 }
 
 module.exports.init = init;
