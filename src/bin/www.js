@@ -5,7 +5,7 @@
  */
 
 require('dotenv').config();
-const app = require('../app');
+const { init } = require('../config');
 const debug = require('debug')('firstblogapp:server');
 const http = require('http');
 
@@ -14,21 +14,6 @@ const http = require('http');
  */
 
 const port = normalizePort(process.env.PORT || '8080');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-const server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -80,8 +65,26 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
+function onListening(server) {
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
 }
+
+init().then(() => {
+  const app = require('../app');
+
+  app.set('port', port);
+  /**
+   * Create HTTP server.
+   */
+  const server = http.createServer(app);
+
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', () => onListening(server));
+});
