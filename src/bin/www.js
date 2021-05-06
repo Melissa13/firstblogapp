@@ -6,7 +6,6 @@
 
 require('dotenv').config();
 const { init } = require('../config');
-const debug = require('debug')('firstblogapp:server');
 const http = require('http');
 
 /**
@@ -68,12 +67,12 @@ function onError(error) {
 function onListening(server) {
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-  debug(`Listening on ${bind}`);
+
+  console.log(`Listening on ${bind}`);
 }
 
-init().then(() => {
-  const app = require('../app');
-
+const app = require('../app');
+init(app).then(() => {
   app.set('port', port);
   /**
    * Create HTTP server.

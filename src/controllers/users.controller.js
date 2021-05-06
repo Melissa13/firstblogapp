@@ -1,5 +1,9 @@
-router.get('/users', (req, res, next) => {
-  const users = await User.findAll();
+module.exports = (UserModel) => {
+  const router = require('express').Router();
 
-  return res.send(users);
-})
+  // create
+  router.get('/test', async (req, res) => {
+    console.log(req.body);
+  });
+  return router;
+};

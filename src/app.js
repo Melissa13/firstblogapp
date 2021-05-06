@@ -18,7 +18,4 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-require('./routes/users.routes')(app);
-require('./routes/blogs.routes')(app);
-
 module.exports = app;
