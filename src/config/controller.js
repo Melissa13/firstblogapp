@@ -1,13 +1,24 @@
 const controllerService = require('../services/controller');
+const glob = require('glob');
+const path = require('path');
+const { getModelName } = require('../services/utils');
+const { getModel } = require('./db');
 
 function init(app) {
-  app.use('/api/users', require('../controllers/users.controller')());
-  require('../controllers/blogs.controller')(app);
+  // require additional routes
+  glob.sync('**/controllers/*.controller.js').forEach((filepath) => {
+    const modelName = getModelName(filepath);
+    const model = getModel(modelName);
 
-  ['users', 'blogs'].forEach(key => {
-    const router = controllerService.createDefaultController(key);
+    app.use(`/api/${modelName}`, require(path.resolve(filepath))(model));
+  });
 
-    app.use(`/api/${key}`, router);
+  // create the controllers for each model
+  glob.sync('**/models/*.model.js').forEach((filepath) => {
+    const modelName = getModelName(filepath);
+    const router = controllerService.createDefaultController(modelName);
+
+    app.use(`/api/${modelName}`, router);
   });
 }
 
