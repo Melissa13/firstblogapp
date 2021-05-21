@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const path = require('path');
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_HOST } = process.env;
 const models = {};
+const { getModelName } = require('../services/utils');
 
 async function init() {
   const sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
@@ -35,10 +36,6 @@ async function init() {
 
 function getModel(modelName) {
   return models[modelName];
-}
-
-function getModelName(filepath) {
-  return filepath.split('/').pop().split('.')[0];
 }
 
 module.exports.init = init;
