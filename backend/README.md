@@ -1,4 +1,4 @@
-### firstblogapp
+### firstblogapp 
 Practice app made in a training. It can store and manage data about users and the blogs created. For the moment it only has the Backend properly implemented, so is needed to use postman in order to test the app
 
 ## Getting Started

@@ -10,8 +10,12 @@ start-docker:
 
 .PHONY: run-proyect
 run-proyect:
-	yarn startdev
+	cd backend && yarn startdev
 
 .PHONY: stop
 stop:
 	docker-compose stop
+
+.PHONY: rm
+rm:
+	docker-compose rm
