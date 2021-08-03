@@ -45,7 +45,7 @@ function FormForUsers() {
     if (id) {
       editUser(userData, headers, id, history);
     } else {
-      createUser(userData, headers);
+      createUser(userData, headers, history);
       history.push('/users');
     }
   };
@@ -98,12 +98,13 @@ function FormForUsers() {
   );
 }
 
-function createUser(userData: object, headers: object) {
+function createUser(userData: object, headers: object, history: any) {
   return axios
     .post('http://localhost:8080/api/users', userData, { headers })
     .then((response) => {
       // eslint-disable-next-line no-console
       console.log('Status: ', response.status);
+      history.push('/users');
     })
     .catch((error) => {
       // eslint-disable-next-line no-console
