@@ -7,7 +7,7 @@ type Params = {
   id: string;
 };
 
-function Formularie() {
+function FormForUsers() {
   let editData = {
     name: '',
     lastName: '',
@@ -128,4 +128,4 @@ function editUser(userData: object, headers: object, userId: any) {
     });
 }
 
-export default Formularie;
+export default FormForUsers;

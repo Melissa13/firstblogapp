@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Button, Layout } from 'antd';
 import { Link } from 'react-router-dom';
 import '../basics.css';
-import Formularie from '../../components/formularie';
+import FormForUsers from '../../components/FormForUsers';
 
 const { Content, Footer } = Layout;
 
@@ -14,7 +14,7 @@ const UsersForm: FC = () => (
           <Button type="primary">Go back</Button>
         </Link>
         <h3>Edit User</h3>
-        <Formularie />
+        <FormForUsers />
       </div>
     </Content>
     <Footer style={{ textAlign: 'center' }}>
