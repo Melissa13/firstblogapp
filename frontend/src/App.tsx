@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import Home from './pages/home';
-import about from './pages/about';
-import Users from './pages/users/usersIndex';
-import UserForm from './pages/users/usersForm';
-import Navbar from './components/navbar';
+import Home from './pages/Home';
+import about from './pages/About';
+import Users from './pages/users/UsersIndex';
+import UserForm from './pages/users/UsersForm';
+import Navbar from './components/Navbar';
 
 function App() {
   return (

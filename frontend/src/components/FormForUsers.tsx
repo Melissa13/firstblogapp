@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Input, Button, Checkbox } from 'antd';
-import { Redirect, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 type Params = {
   id: string;
 };
 
 function FormForUsers() {
+  const history = useHistory();
   let editData = {
     name: '',
     lastName: '',
@@ -17,7 +18,17 @@ function FormForUsers() {
   };
   const { id } = useParams<Params>();
   if (id) {
-    const userData: any = getUser(id);
+    const [data, setData] = useState([]);
+    const fetchData = async () => {
+      const result = await axios(`http://localhost:8080/api/users/${id}`);
+
+      setData(result.data);
+    };
+
+    useEffect(() => {
+      fetchData();
+    }, []);
+    const userData: any = data;
     editData = userData;
   }
   const onFinish = (values: any) => {
@@ -32,9 +43,10 @@ function FormForUsers() {
       'Content-Type': 'application/json'
     };
     if (id) {
-      editUser(userData, headers, id);
+      editUser(userData, headers, id, history);
     } else {
       createUser(userData, headers);
+      history.push('/users');
     }
   };
   return (
@@ -86,27 +98,12 @@ function FormForUsers() {
   );
 }
 
-function getUser(userId: any) {
-  const [data, setData] = useState([]);
-  const fetchData = async () => {
-    const result = await axios(`http://localhost:8080/api/users/${userId}`);
-
-    setData(result.data);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  return data;
-}
 function createUser(userData: object, headers: object) {
   return axios
     .post('http://localhost:8080/api/users', userData, { headers })
     .then((response) => {
       // eslint-disable-next-line no-console
       console.log('Status: ', response.status);
-      return <Redirect to="/users" />;
     })
     .catch((error) => {
       // eslint-disable-next-line no-console
@@ -114,13 +111,13 @@ function createUser(userData: object, headers: object) {
     });
 }
 
-function editUser(userData: object, headers: object, userId: any) {
+function editUser(userData: object, headers: object, userId: any, history: any) {
   return axios
     .put(`http://localhost:8080/api/users/${userId}`, userData, { headers })
     .then((response) => {
       // eslint-disable-next-line no-console
       console.log('Status: ', response.status);
-      return <Redirect to="/users" />;
+      history.push('/users');
     })
     .catch((error) => {
       // eslint-disable-next-line no-console
