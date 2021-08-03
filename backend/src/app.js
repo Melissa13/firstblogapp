@@ -8,9 +8,7 @@ const app = express();
     console.log("Drop and re-sync db.");
   });*/
 
-const corsOptions = {
-  origin: 'http://localhost:8081'
-};
+const corsOptions = {};
 
 app.use(cors(corsOptions));
 app.use(logger('dev'));
