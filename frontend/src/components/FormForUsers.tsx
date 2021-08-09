@@ -1,60 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import axios from 'axios';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { useHistory, useParams } from 'react-router-dom';
 
 type Params = {
   id: string;
 };
 
-function FormForUsers() {
+const FormForUsers: FC = () => {
   const history = useHistory();
-  let editData = {
-    name: '',
-    lastName: '',
-    email: '',
-    country: '',
-    password: ''
-  };
+  const [form] = Form.useForm();
   const { id } = useParams<Params>();
-  if (id) {
-    const [data, setData] = useState([]);
-    const fetchData = async () => {
-      const result = await axios(`http://localhost:8080/api/users/${id}`);
 
-      setData(result.data);
-    };
+  const fetchData = async () => {
+    const result = await axios(`http://localhost:8080/api/users/${id}`);
+    form.setFieldsValue(result.data);
+  };
 
-    useEffect(() => {
+  useEffect(() => {
+    if (id !== 'create') {
       fetchData();
-    }, []);
-    const userData: any = data;
-    editData = userData;
-  }
+    }
+  }, []);
+
   const onFinish = (values: any) => {
     const userData = {
-      name: values.name,
-      lastName: values.lastname,
-      email: values.email,
-      country: values.country,
-      password: values.password
+      ...values
     };
     const headers = {
       'Content-Type': 'application/json'
     };
-    if (id) {
+    if (id !== 'create') {
       editUser(userData, headers, id, history);
     } else {
-      createUser(userData, headers, history);
-      history.push('/users');
+      createUser(userData).then(() => {
+        history.push('/users');
+      });
     }
   };
+
   return (
     <Form
       name="basic"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
-      initialValues={{ remember: true, name: 'editData.name' }}
+      form={form}
+      initialValues={{ remember: true }}
       onFinish={onFinish}
     >
       <Form.Item
@@ -65,16 +56,16 @@ function FormForUsers() {
         <Input />
       </Form.Item>
 
-      <Form.Item label="Lastname" name="lastname" rules={[{ message: 'User Lastname goes here' }]}>
-        <Input placeholder={editData.lastName} />
+      <Form.Item label="Lastname" name="lastName" rules={[{ message: 'User Lastname goes here' }]}>
+        <Input />
       </Form.Item>
 
       <Form.Item label="E-mail" name="email" rules={[{ message: 'User email goes here' }]}>
-        <Input placeholder={editData.email} />
+        <Input />
       </Form.Item>
 
       <Form.Item label="Country" name="country" rules={[{ message: 'User country goes here' }]}>
-        <Input placeholder={editData.country} />
+        <Input />
       </Form.Item>
 
       <Form.Item
@@ -82,7 +73,7 @@ function FormForUsers() {
         name="password"
         rules={[{ required: true, message: 'Please input the password!' }]}
       >
-        <Input.Password placeholder={editData.password} />
+        <Input.Password />
       </Form.Item>
 
       <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
@@ -96,23 +87,19 @@ function FormForUsers() {
       </Form.Item>
     </Form>
   );
-}
+};
 
-function createUser(userData: object, headers: object, history: any) {
+function createUser(userData: object) {
   return axios
-    .post('http://localhost:8080/api/users', userData, { headers })
-    .then((response) => {
-      // eslint-disable-next-line no-console
-      console.log('Status: ', response.status);
-      history.push('/users');
+    .post('http://localhost:8080/api/users', userData, {
+      headers: { 'Content-Type': 'application/json' }
     })
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.error('Something went wrong!', error);
+    .catch(() => {
+      message.error('Something went wrong!');
     });
 }
 
-function editUser(userData: object, headers: object, userId: any, history: any) {
+function editUser(userData: object, headers: object, userId: string, history: any) {
   return axios
     .put(`http://localhost:8080/api/users/${userId}`, userData, { headers })
     .then((response) => {

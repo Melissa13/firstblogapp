@@ -4,7 +4,7 @@ import './basics.css';
 
 const { Content, Footer } = Layout;
 
-const about: FC = () => (
+const About: FC = () => (
   <div>
     <Content className="content-fit">
       <h1>About page</h1>
@@ -16,4 +16,4 @@ const about: FC = () => (
   </div>
 );
 
-export default about;
+export default About;
