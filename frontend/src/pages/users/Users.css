@@ -1,8 +1,9 @@
 .user-space-buttons {
-  margin-right: 20px;
+  margin: 20px;
 }
 
 .user-center-content {
   text-align: center;
   margin: 24px 0px 32px 0px;
+  padding: 0 50px;
 }

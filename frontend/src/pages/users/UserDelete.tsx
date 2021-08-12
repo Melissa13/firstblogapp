@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Layout, Button, message } from 'antd';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import '../basics.css';
 import './Users.css';
 
 const { Content, Footer } = Layout;
