@@ -39,8 +39,20 @@ const Users: FC = () => {
       key: 'id',
       dataIndex: 'id',
       render: (userid: any) => (
-        <Link to={{ pathname: `/users/${userid}`, state: userid }}>
+        <Link
+          to={{ pathname: `/users/${userid}`, state: { description: 'This is the edit page' } }}
+        >
           <Button type="primary">Edit user</Button>
+        </Link>
+      )
+    },
+    {
+      title: 'Delete user',
+      key: 'id',
+      dataIndex: 'id',
+      render: (userid: any) => (
+        <Link to={`/users/delete/${userid}`}>
+          <Button type="primary">Delete user</Button>
         </Link>
       )
     }
@@ -52,10 +64,10 @@ const Users: FC = () => {
       <Content className="content-fit">
         <h1>Users Page</h1>
         <p>this is where the users are going to be presented</p>
-        <Table columns={columns} dataSource={data} />
         <Link to="/users/create">
           <Button type="primary">Create User</Button>
         </Link>
+        <Table columns={columns} dataSource={data} />
       </Content>
       <Footer style={{ textAlign: 'center' }}>
         FirstBlog app proyect, by Melissa Lantigua Fermin

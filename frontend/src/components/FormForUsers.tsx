@@ -27,11 +27,10 @@ const FormForUsers: FC = () => {
     const userData = {
       ...values
     };
-    const headers = {
-      'Content-Type': 'application/json'
-    };
     if (id !== 'create') {
-      editUser(userData, headers, id, history);
+      editUser(id, userData).then(() => {
+        history.push('/users');
+      });
     } else {
       createUser(userData).then(() => {
         history.push('/users');
@@ -48,11 +47,7 @@ const FormForUsers: FC = () => {
       initialValues={{ remember: true }}
       onFinish={onFinish}
     >
-      <Form.Item
-        label="Name"
-        name="name"
-        rules={[{ required: true, message: 'User name goes here' }]}
-      >
+      <Form.Item label="Name" name="name" rules={[{ message: 'User name goes here' }]}>
         <Input />
       </Form.Item>
 
@@ -60,7 +55,11 @@ const FormForUsers: FC = () => {
         <Input />
       </Form.Item>
 
-      <Form.Item label="E-mail" name="email" rules={[{ message: 'User email goes here' }]}>
+      <Form.Item
+        label="E-mail"
+        name="email"
+        rules={[{ required: true, message: 'User email goes here' }]}
+      >
         <Input />
       </Form.Item>
 
@@ -99,13 +98,10 @@ function createUser(userData: object) {
     });
 }
 
-function editUser(userData: object, headers: object, userId: string, history: any) {
+function editUser(userId: string, userData: object) {
   return axios
-    .put(`http://localhost:8080/api/users/${userId}`, userData, { headers })
-    .then((response) => {
-      // eslint-disable-next-line no-console
-      console.log('Status: ', response.status);
-      history.push('/users');
+    .put(`http://localhost:8080/api/users/${userId}`, userData, {
+      headers: { 'Content-Type': 'application/json' }
     })
     .catch((error) => {
       // eslint-disable-next-line no-console

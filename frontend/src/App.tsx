@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Users from './pages/users/UsersIndex';
 import UserForm from './pages/users/UsersForm';
+import UserDelete from './pages/users/UserDelete';
 import Navbar from './components/Navbar';
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
         <Route path="/" component={Home} exact />
         <Route path="/about" component={About} />
         <Route path="/users" component={Users} exact />
-        <Route path="/users/:id" component={UserForm} />
+        <Route path="/users/:id" component={UserForm} exact />
+        <Route path="/users/delete/:id" component={UserDelete} exact />
       </Switch>
     </div>
   );
