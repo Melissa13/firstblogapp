@@ -1,9 +1,10 @@
 import React, { useState, useEffect, FC } from 'react';
 import axios from 'axios';
-import { Layout, Button, Table } from 'antd';
+import { Layout, Button, Table, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import './Users.css';
 
+const { Paragraph, Title } = Typography;
 const { Content, Footer } = Layout;
 
 const Users: FC = () => {
@@ -62,8 +63,8 @@ const Users: FC = () => {
   return (
     <div>
       <Content className="user-center-content">
-        <h1>Users Page</h1>
-        <p>this is where the users are going to be presented</p>
+        <Title>Users Page</Title>
+        <Paragraph>this is where the users are going to be presented</Paragraph>
         <Link to="/users/create">
           <Button type="primary" className="user-space-buttons">
             Create User

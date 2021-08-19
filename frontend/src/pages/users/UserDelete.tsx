@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Layout, Button, message } from 'antd';
+import { Layout, Button, message, Typography } from 'antd';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import './Users.css';
 
+const { Paragraph, Title } = Typography;
 const { Content, Footer } = Layout;
 type Params = {
   id: string;
@@ -38,12 +39,12 @@ const UserDelete: FC = () => {
       <Content>
         <div className="user-center-content">
           <div>
-            <h1>
+            <Title>
               Borrar datos de {data.name} {data.lastName}
-            </h1>
+            </Title>
           </div>
           <div>
-            <p>Estas seguro que quieres borrar a este usuario del sistema?</p>
+            <Paragraph>Estas seguro que quieres borrar a este usuario del sistema?</Paragraph>
           </div>
           <div>
             <Button

@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
-import { Layout } from 'antd';
+import { Layout, Typography } from 'antd';
 import './basics.css';
 
 const { Content, Footer } = Layout;
+const { Paragraph, Title } = Typography;
 
 const Home: FC = () => {
   const title: string = 'Home';
@@ -10,8 +11,8 @@ const Home: FC = () => {
   return (
     <div>
       <Content className="content-fit">
-        <h1>{title}</h1>
-        <p>Example of the home page</p>
+        <Title>{title}</Title>
+        <Paragraph>Example of the home page</Paragraph>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
         FirstBlog app proyect, by Melissa Lantigua Fermin

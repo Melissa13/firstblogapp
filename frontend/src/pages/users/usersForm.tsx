@@ -1,20 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect } from 'react';
-import { Form, Input, Button, Layout, Checkbox, message } from 'antd';
+import { Form, Input, Button, Layout, Checkbox, message, Typography } from 'antd';
 import axios from 'axios';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import '../basics.css';
 // import FormForUsers from '../../components/FormForUsers';
 
+const { Title } = Typography;
 const { Content, Footer } = Layout;
 type Params = {
   id: string;
 };
-
-interface LocationState {
-  description: string;
-  pathname: string;
-  state: object;
-}
 
 interface UserInfo {
   name: string;
@@ -25,34 +21,32 @@ interface UserInfo {
 }
 
 const UsersForm: FC = () => {
-  const history = useHistory<LocationState>();
-  let description = 'This is the create user page';
+  const history = useHistory();
   const [form] = Form.useForm<UserInfo>();
   const { id } = useParams<Params>();
-  if (history.location.state !== undefined) {
-    description = history.location.state.description;
-  }
+  const isNew = id === 'create';
+  const description = isNew ? 'This is the create user page' : 'This is the edit page';
 
   useEffect(() => {
-    if (id !== 'create') {
+    if (!isNew) {
       const fetchData = async () => {
         const result = await axios(`http://localhost:8080/api/users/${id}`);
         form.setFieldsValue(result.data);
       };
       fetchData();
     }
-  }, [form, id]);
+  }, [form, isNew]);
 
   const onFinish = (values: any) => {
     const userData = {
       ...values
     };
-    if (id !== 'create') {
-      editUser(id, userData).then(() => {
+    if (isNew) {
+      createUser(userData).then(() => {
         history.push('/users');
       });
     } else {
-      createUser(userData).then(() => {
+      editUser(id, userData).then(() => {
         history.push('/users');
       });
     }
@@ -65,8 +59,7 @@ const UsersForm: FC = () => {
           <Link to="/users">
             <Button type="primary">Go back</Button>
           </Link>
-          <h3>{description}</h3>
-          <h3>Edit User</h3>
+          <Title level={3}>{description}</Title>
           <Form
             name="basic"
             labelCol={{ span: 8 }}
