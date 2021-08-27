@@ -9,15 +9,15 @@ const Home: FC = () => {
   const title: string = 'Home';
 
   return (
-    <div>
+    <Layout>
       <Content className="content-fit">
         <Title>{title}</Title>
         <Paragraph>Example of the home page</Paragraph>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
-        FirstBlog app proyect, by Melissa Lantigua Fermin
+        FirstBlog app protect, by Melissa Lantigua Fermin
       </Footer>
-    </div>
+    </Layout>
   );
 };
 

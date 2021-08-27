@@ -73,9 +73,9 @@ const UsersForm: FC = () => {
             </Form.Item>
 
             <Form.Item
-              label="Lastname"
+              label="Last name"
               name="lastName"
-              rules={[{ message: 'User Lastname goes here' }]}
+              rules={[{ message: 'User Last name goes here' }]}
             >
               <Input />
             </Form.Item>
