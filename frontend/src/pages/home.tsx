@@ -15,7 +15,7 @@ const Home: FC = () => {
         <Paragraph>Example of the home page</Paragraph>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
-        FirstBlog app protect, by Melissa Lantigua Fermin
+        FirstBlog app project, by Melissa Lantigua Fermin
       </Footer>
     </Layout>
   );
