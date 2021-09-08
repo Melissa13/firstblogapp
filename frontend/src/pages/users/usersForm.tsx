@@ -3,8 +3,7 @@ import React, { FC, useEffect } from 'react';
 import { Form, Input, Button, Layout, Checkbox, message, Typography } from 'antd';
 import axios from 'axios';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import '../basics.css';
-// import FormForUsers from '../../components/FormForUsers';
+import './Users.css';
 
 const { Title } = Typography;
 const { Content, Footer } = Layout;
@@ -53,73 +52,67 @@ const UsersForm: FC = () => {
   };
 
   return (
-    <div>
+    <Layout className="content-color">
       <Content className="content-fit">
-        <div style={{ marginTop: 10 }}>
-          <Link to="/users">
-            <Button type="primary">Go back</Button>
-          </Link>
-          <Title level={3}>{description}</Title>
-          <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            form={form}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
+        <Link to="/users">
+          <Button type="primary">Go back</Button>
+        </Link>
+        <Title level={3}>{description}</Title>
+        <Form
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          form={form}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+        >
+          <Form.Item label="Name" name="name" rules={[{ message: 'User name goes here' }]}>
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Last name"
+            name="lastName"
+            rules={[{ message: 'User Last name goes here' }]}
           >
-            <Form.Item label="Name" name="name" rules={[{ message: 'User name goes here' }]}>
-              <Input />
-            </Form.Item>
+            <Input />
+          </Form.Item>
 
-            <Form.Item
-              label="Last name"
-              name="lastName"
-              rules={[{ message: 'User Last name goes here' }]}
-            >
-              <Input />
-            </Form.Item>
+          <Form.Item
+            label="E-mail"
+            name="email"
+            rules={[{ required: true, message: 'User email goes here' }]}
+          >
+            <Input />
+          </Form.Item>
 
-            <Form.Item
-              label="E-mail"
-              name="email"
-              rules={[{ required: true, message: 'User email goes here' }]}
-            >
-              <Input />
-            </Form.Item>
+          <Form.Item label="Country" name="country" rules={[{ message: 'User country goes here' }]}>
+            <Input />
+          </Form.Item>
 
-            <Form.Item
-              label="Country"
-              name="country"
-              rules={[{ message: 'User country goes here' }]}
-            >
-              <Input />
-            </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: 'Please input the password!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
 
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[{ required: true, message: 'Please input the password!' }]}
-            >
-              <Input.Password />
-            </Form.Item>
+          <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
 
-            <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
         FirstBlog app proyect, by Melissa Lantigua Fermin
       </Footer>
-    </div>
+    </Layout>
   );
 };
 

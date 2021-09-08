@@ -6,7 +6,7 @@ const { Content, Footer } = Layout;
 const { Paragraph, Title } = Typography;
 
 const About: FC = () => (
-  <div>
+  <Layout>
     <Content className="content-fit">
       <Title>About page</Title>
       <Paragraph>Example of the about page</Paragraph>
@@ -14,7 +14,7 @@ const About: FC = () => (
     <Footer style={{ textAlign: 'center' }}>
       FirstBlog app proyect, by Melissa Lantigua Fermin
     </Footer>
-  </div>
+  </Layout>
 );
 
 export default About;

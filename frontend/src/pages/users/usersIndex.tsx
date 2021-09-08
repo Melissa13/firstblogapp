@@ -86,7 +86,7 @@ const Users: FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout className="content-color">
       <Content className="user-center-content">
         <Title>Users Page</Title>
         <Paragraph>this is where the users are going to be presented</Paragraph>

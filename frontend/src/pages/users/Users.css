@@ -7,3 +7,11 @@
   margin: 24px 0px 32px 0px;
   padding: 0 50px;
 }
+
+.content-color {
+  background-color: white;
+}
+
+.content-fit {
+  margin-top: 10px;
+}
