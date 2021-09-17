@@ -1,0 +1,21 @@
+.blog-space-buttons {
+    margin: 20px;
+}
+  
+.blog-center-content {
+    text-align: center;
+    margin: 24px 0px 32px 0px;
+    padding: 0 50px;
+}
+
+.content-color {
+    background-color: white;
+}
+
+.content-fit {
+    margin-top: 10px;
+}
+
+.editorClassName {
+    border: 1px solid gray;
+}

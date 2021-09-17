@@ -16,6 +16,9 @@ const Navbar: FC = () => (
       <Menu.Item>
         <Link to="/users">Users</Link>
       </Menu.Item>
+      <Menu.Item>
+        <Link to="/blogs">Blogs</Link>
+      </Menu.Item>
     </Menu>
   </Header>
 );

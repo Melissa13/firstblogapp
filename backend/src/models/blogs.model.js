@@ -10,6 +10,9 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false
     },
+    authorId: {
+      type: Sequelize.STRING
+    },
     isDeleted: {
       type: Sequelize.BOOLEAN,
       defaultValue: false
