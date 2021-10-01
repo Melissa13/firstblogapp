@@ -4,7 +4,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Form, Input, Button, Layout, Checkbox, message, Typography } from 'antd';
 import axios from 'axios';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, convertFromRaw, ContentState, convertFromHTML } from 'draft-js';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
@@ -30,8 +30,18 @@ type EditorInputProps = {
 };
 
 const EditorInput: FC<EditorInputProps> = (props: EditorInputProps) => {
-  const { onChange, value } = props;
+  const { onChange, value = '' } = props;
+  const blocksFromHTML = convertFromHTML(value);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  useEffect(() => {
+    if (value) {
+      setEditorState(
+        EditorState.createWithContent(
+          ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap)
+        )
+      );
+    }
+  }, [value]);
 
   const onEditorStateChange = (_editorState: any) => {
     setEditorState(_editorState);
