@@ -19,3 +19,18 @@
 .editorClassName {
     border: 1px solid gray;
 }
+
+.content-fit-button {
+    margin: 10px;
+}
+
+.description {
+    margin-top: 50px;
+}
+
+.blog-center-render {
+    text-align: center;
+    margin: 24px 32px 48px 32px;
+    padding: 0 0 50px 0;
+    border-radius: 4px;
+}

@@ -8,6 +8,7 @@ import UserForm from './pages/users/UsersForm';
 import Navbar from './components/Navbar';
 import Blogs from './pages/blogs/BlogsIndex';
 import BlogsForm from './pages/blogs/BlogsForm';
+import BlogRender from './pages/blogs/BlogsRender';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/users/:id" component={UserForm} exact />
         <Route path="/blogs" component={Blogs} exact />
         <Route path="/blogs/:id" component={BlogsForm} exact />
+        <Route path="/blog/:id" component={BlogRender} exact />
       </Switch>
     </div>
   );

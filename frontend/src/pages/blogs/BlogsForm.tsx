@@ -2,7 +2,7 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
-import { Form, Input, Button, Layout, Checkbox, message, Typography } from 'antd';
+import { Form, Input, Button, Layout, Checkbox, message, Typography, Switch } from 'antd';
 import axios from 'axios';
 import { EditorState, convertToRaw, convertFromRaw, ContentState, convertFromHTML } from 'draft-js';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -22,6 +22,8 @@ interface BlogInfo {
   title: string;
   description: string;
   authorId: string;
+  published: boolean;
+  publishedUrl?: string;
 }
 
 type EditorInputProps = {
@@ -128,6 +130,10 @@ const BlogsForm: FC = () => {
             rules={[{ message: 'blog description goes here' }]}
           >
             <EditorInput />
+          </Form.Item>
+
+          <Form.Item label="Publish?" name="published" valuePropName="checked">
+            <Switch />
           </Form.Item>
 
           <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
