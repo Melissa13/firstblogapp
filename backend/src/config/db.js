@@ -22,6 +22,9 @@ async function init() {
     const modelName = getModelName(filepath);
 
     models[modelName] = require(path.resolve(filepath))(sequelize, Sequelize);
+    // if ('associate' in models[modelName]) {
+    //   models[modelName].associate(models);
+    // }
   });
   // models['users'].hasMany(models['blogs'], { as: 'blogs' });
   // models['blogs'].belongsTo(models['users'], {

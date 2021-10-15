@@ -1,3 +1,5 @@
+// const { Users } = require('./users.model');
+
 module.exports = (sequelize, Sequelize) => {
   const Blogs = sequelize.define('blogs', {
     title: {
@@ -18,6 +20,18 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: false
     }
   });
+
+  // references: {
+  //   model: 'users',
+  //   key: 'id'
+  // }
+
+  // Blogs.associate = (models) => {
+  //   Blogs.belongsTo(models.users, {
+  //     foreignKey: 'authorId',
+  //     targetKey: 'id'
+  //   });
+  // };
 
   return Blogs;
 };

@@ -13,6 +13,7 @@ interface BlogInfo {
   title?: string;
   description?: string;
   authorId?: string;
+  published?: boolean;
 }
 
 /* interface UserInfo {
@@ -80,6 +81,23 @@ const Blogs: FC = () => {
       }
     },
     {
+      title: 'Published status',
+      key: 'published',
+      dataIndex: ['published', 'id'],
+      render: (text: any, row: any) => {
+        const result = row.published ? 'Published' : 'Unpublished';
+        const buttonText = row.published ? 'Unpublish' : 'Publish';
+        return (
+          <div>
+            <Paragraph>{result}</Paragraph>
+            <Button type="primary" onClick={() => publishManager(row.id, !row.published)}>
+              {buttonText}
+            </Button>
+          </div>
+        );
+      }
+    },
+    {
       title: 'Edit blog',
       key: 'id',
       dataIndex: 'id',
@@ -105,6 +123,15 @@ const Blogs: FC = () => {
     const blogData = data.filter((element) => element.id === blogId);
     setSingleBlog(blogData[0]);
     setIsModalVisible(true);
+  };
+
+  const publishManager = async (blogId: string, publishOption: boolean) => {
+    const blogData = data.filter((element) => element.id === blogId);
+    blogData[0].published = publishOption;
+    setSingleBlog(blogData[0]);
+    // general slug aqui
+    await publishBlog(singleBlog.id, singleBlog);
+    fetchData();
   };
 
   const handleOk = async () => {
@@ -148,6 +175,17 @@ function deleteBlog(blogId: string, blogData: object) {
   return axios.delete(`http://localhost:8080/api/blogs/${blogId}`, blogData).catch(() => {
     message.error('Something went wrong!');
   });
+}
+
+function publishBlog(blogId: string, blogData: object) {
+  return axios
+    .put(`http://localhost:8080/api/blogs/${blogId}`, blogData, {
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error('Something went wrong!', error);
+    });
 }
 
 export default Blogs;
