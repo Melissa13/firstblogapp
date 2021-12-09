@@ -1,4 +1,7 @@
+const { getModel } = require('../config/db');
+
 module.exports = (BlogModel) => {
+  const PublishedBlogModel = getModel('publishedBlogs');
   const router = require('express').Router();
 
   router.get('/published', async (req, res) => {
@@ -12,5 +15,71 @@ module.exports = (BlogModel) => {
       });
     }
   });
+
+  router.put('/:id/publish', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateBlog = req.body;
+      updateBlog.published = true;
+      await BlogModel.update(updateBlog, {
+        where: { id }
+      });
+      /* const result = await BlogModel.update(
+        { published: true },
+        {
+          where: { id }
+        }
+      );*/
+
+      const foundItem = await PublishedBlogModel.findByPk(id);
+      if (!foundItem) {
+        const result = await PublishedBlogModel.create(updateBlog);
+        return res.send(result);
+      }
+
+      const result = await PublishedBlogModel.update(updateBlog, {
+        where: { id: foundItem.id }
+      });
+      return res.send(result);
+    } catch (err) {
+      return res.status(500).send({
+        message: err.message || 'the model is ignoring you.'
+      });
+    }
+  });
+
+  router.put('/:id/unpublish', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateBlog = req.body;
+      updateBlog.published = false;
+      await BlogModel.update(updateBlog, {
+        where: { id }
+      });
+
+      const result = await PublishedBlogModel.destroy({
+        where: { id }
+      });
+      return res.send(result);
+    } catch (err) {
+      return res.status(500).send({
+        message: err.message || 'the model is ignoring you.'
+      });
+    }
+  });
+
+  // get blog by url slug
+  router.get('/published/:publishedUrl', async (req, res) => {
+    try {
+      const result = await BlogModel.findOne({ where: { publishedUrl: req.params.publishedUrl } });
+
+      return res.send(result);
+    } catch (err) {
+      return res.status(500).send({
+        message: err.message || 'the model is ignoring you.'
+      });
+    }
+  });
+
   return router;
 };

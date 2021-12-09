@@ -2,7 +2,7 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
-import { Form, Input, Button, Layout, Checkbox, message, Typography, Switch } from 'antd';
+import { Form, Input, Button, Layout, Checkbox, message, Typography, Switch, Radio } from 'antd';
 import axios from 'axios';
 import { EditorState, convertToRaw, convertFromRaw, ContentState, convertFromHTML } from 'draft-js';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './Blogs.css';
+import slugify from 'slugify';
 
 const { Title } = Typography;
 const { Content, Footer } = Layout;
@@ -19,10 +20,10 @@ type Params = {
 
 interface BlogInfo {
   id: string;
-  title: string;
-  description: string;
-  authorId: string;
-  published: boolean;
+  title?: string;
+  content?: string;
+  authorId?: string;
+  published?: boolean;
   publishedUrl?: string;
 }
 
@@ -68,12 +69,14 @@ const BlogsForm: FC = () => {
   const [form] = Form.useForm<BlogInfo>();
   const { id } = useParams<Params>();
   const isNew = id === 'create';
-  // const [description, setDescription] = useState('');
+  const [formData, setFormData] = useState<BlogInfo>({ id: `0` });
+  // const [content, setContent] = useState('');
 
   useEffect(() => {
     if (!isNew) {
       const fetchData = async () => {
         const result = await axios(`http://localhost:8080/api/blogs/${id}`);
+        setFormData(result.data);
         form.setFieldsValue(result.data);
       };
       fetchData();
@@ -81,19 +84,65 @@ const BlogsForm: FC = () => {
   }, [form, isNew]);
 
   const onFinish = (values: any) => {
+    const slug = slugify(values.title);
     const blogData = {
-      ...values
+      ...values,
+      published: formData?.published,
+      publishedUrl: slug
     };
+    setFormData(blogData);
     if (isNew) {
       createBlog(blogData).then(() => {
-        history.push('/blogs');
+        message.success('New blog data saved', 3);
       });
     } else {
       editBlog(id, blogData).then(() => {
-        history.push('/blogs');
+        // history.push('/blogs');
+        message.success('blog data Update', 3);
       });
     }
   };
+
+  const publishChanges = () => {
+    const blogData = {
+      ...formData,
+      published: true
+    };
+    setFormData(blogData);
+    createUpdatePublishedBlog(id, formData).then(() => {
+      message.success('Blog Published', 3);
+    });
+  };
+
+  const unPublish = () => {
+    const blogData = {
+      ...formData,
+      published: false
+    };
+    setFormData(blogData);
+    deletePublishedBlog(id, formData).then(() => {
+      message.success('Blog Unpublished', 3);
+    });
+  };
+
+  const yetToPublishButton = (
+    <div className="blog-center-content">
+      <Button type="primary" onClick={() => publishChanges()}>
+        Publish Blog
+      </Button>
+    </div>
+  );
+
+  const alreadyPublishButton = (
+    <div className="blog-center-content">
+      <Button type="primary" className="blog-center-button" onClick={() => publishChanges()}>
+        Republish Blog
+      </Button>
+      <Button type="primary" onClick={() => unPublish()}>
+        Unpublish Blog
+      </Button>
+    </div>
+  );
 
   return (
     <Layout className="content-color">
@@ -106,13 +155,18 @@ const BlogsForm: FC = () => {
         </Title>
         <Form
           name="basic"
-          labelCol={{ span: 8 }}
+          labelCol={{ span: 5 }}
           wrapperCol={{ span: 16 }}
           form={form}
           initialValues={{ remember: true }}
           onFinish={onFinish}
+          className="blog-center-button"
         >
-          <Form.Item label="Title" name="title" rules={[{ message: 'blog title goes here' }]}>
+          <Form.Item
+            label="Title"
+            name="title"
+            rules={[{ required: true, message: 'blog title goes here' }]}
+          >
             <Input />
           </Form.Item>
 
@@ -124,28 +178,21 @@ const BlogsForm: FC = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item
-            label="Description"
-            name="description"
-            rules={[{ message: 'blog description goes here' }]}
-          >
+          <Form.Item label="Content" name="content" rules={[{ message: 'blog content goes here' }]}>
             <EditorInput />
           </Form.Item>
 
-          <Form.Item label="Publish?" name="published" valuePropName="checked">
-            <Switch />
-          </Form.Item>
-
-          <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
+          <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 8 }}>
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
             <Button type="primary" htmlType="submit">
-              Submit
+              Guardar Cambios
             </Button>
           </Form.Item>
         </Form>
+        {formData?.published ? alreadyPublishButton : yetToPublishButton}
       </Content>
       <Footer style={{ textAlign: 'center' }}>
         FirstBlog app proyect, by Melissa Lantigua Fermin
@@ -167,6 +214,28 @@ function createBlog(blogData: object) {
 function editBlog(blogId: string, blogData: object) {
   return axios
     .put(`http://localhost:8080/api/blogs/${blogId}`, blogData, {
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error('Something went wrong!', error);
+    });
+}
+
+function createUpdatePublishedBlog(blogId: string, blogData: object) {
+  return axios
+    .put(`http://localhost:8080/api/blogs/${blogId}/publish`, blogData, {
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error('Something went wrong!', error);
+    });
+}
+
+function deletePublishedBlog(blogId: string, blogData: object) {
+  return axios
+    .put(`http://localhost:8080/api/blogs/${blogId}/unpublish`, blogData, {
       headers: { 'Content-Type': 'application/json' }
     })
     .catch((error) => {

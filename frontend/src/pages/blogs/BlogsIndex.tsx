@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Layout, Button, Table, Typography, Modal, message } from 'antd';
 import { Link } from 'react-router-dom';
 import './Blogs.css';
+import slugify from 'slugify';
 
 const { Paragraph, Title } = Typography;
 const { Content, Footer } = Layout;
@@ -11,7 +12,7 @@ const { Content, Footer } = Layout;
 interface BlogInfo {
   id: string;
   title?: string;
-  description?: string;
+  content?: string;
   authorId?: string;
   published?: boolean;
 }
@@ -83,12 +84,14 @@ const Blogs: FC = () => {
     {
       title: 'Published status',
       key: 'published',
-      dataIndex: ['published', 'id'],
+      dataIndex: ['published', 'title'],
       render: (text: any, row: any) => {
+        const slug = slugify(row.title);
+        console.log(slug);
         const HtmlText = row.published ? (
-          <Link to={`/blog/${row.id}`}>
-            <Button type="primary">Published</Button>
-          </Link>
+          <Link to={`/blog/${slug}`}>
+          <Button type="primary">Published</Button>
+        </Link>
         ) : (
           <Paragraph>Unpublished</Paragraph>
         );

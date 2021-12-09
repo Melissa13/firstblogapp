@@ -1,7 +1,7 @@
 // const { Users } = require('./users.model');
 
 module.exports = (sequelize, Sequelize) => {
-  const Blogs = sequelize.define('blogs', {
+  const PublishedBlogs = sequelize.define('publishedBlogs', {
     title: {
       type: Sequelize.STRING
     },
@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     published: {
       type: Sequelize.BOOLEAN,
-      defaultValue: false
+      defaultValue: true
     },
     authorId: {
       type: Sequelize.STRING
@@ -24,17 +24,5 @@ module.exports = (sequelize, Sequelize) => {
     }
   });
 
-  // references: {
-  //   model: 'users',
-  //   key: 'id'
-  // }
-
-  // Blogs.associate = (models) => {
-  //   Blogs.belongsTo(models.users, {
-  //     foreignKey: 'authorId',
-  //     targetKey: 'id'
-  //   });
-  // };
-
-  return Blogs;
+  return PublishedBlogs;
 };
