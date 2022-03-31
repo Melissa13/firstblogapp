@@ -15,6 +15,9 @@ module.exports = (sequelize, Sequelize) => {
     authorId: {
       type: Sequelize.STRING
     },
+    draftBlogId: {
+      type: Sequelize.STRING
+    },
     publishedUrl: {
       type: Sequelize.STRING
     },

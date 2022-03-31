@@ -21,9 +21,13 @@ module.exports = (BlogModel) => {
       const { id } = req.params;
       const updateBlog = req.body;
       updateBlog.published = true;
-      await BlogModel.update(updateBlog, {
-        where: { id }
-      });
+      updateBlog.draftBlogId = id;
+      await BlogModel.update(
+        { published: true },
+        {
+          where: { id }
+        }
+      );
       /* const result = await BlogModel.update(
         { published: true },
         {
@@ -31,7 +35,7 @@ module.exports = (BlogModel) => {
         }
       );*/
 
-      const foundItem = await PublishedBlogModel.findByPk(id);
+      const foundItem = await PublishedBlogModel.findOne({ where: { draftBlogId: id } });
       if (!foundItem) {
         const result = await PublishedBlogModel.create(updateBlog);
         return res.send(result);
@@ -51,14 +55,15 @@ module.exports = (BlogModel) => {
   router.put('/:id/unpublish', async (req, res) => {
     try {
       const { id } = req.params;
-      const updateBlog = req.body;
-      updateBlog.published = false;
-      await BlogModel.update(updateBlog, {
-        where: { id }
-      });
+      await BlogModel.update(
+        { published: false },
+        {
+          where: { id }
+        }
+      );
 
       const result = await PublishedBlogModel.destroy({
-        where: { id }
+        where: { draftBlogId: id }
       });
       return res.send(result);
     } catch (err) {
