@@ -9,19 +9,25 @@ import Navbar from './components/Navbar';
 import Blogs from './pages/blogs/BlogsIndex';
 import BlogsForm from './pages/blogs/BlogsForm';
 import BlogRender from './pages/blogs/BlogsRender';
+import LogIn from './pages/logIn/LogInIndex';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 function App() {
+  // const [isLogIn, setIsLogIn] = useState(false);
+  // setIsLogIn(false);
+
   return (
     <div>
       <Navbar />
       <Switch>
         <Route path="/" component={Home} exact />
         <Route path="/about" component={About} />
-        <Route path="/users" component={Users} exact />
-        <Route path="/users/:id" component={UserForm} exact />
+        <ProtectedRoute path="/users" component={Users} exact />
+        <ProtectedRoute path="/users/:id" component={UserForm} exact />
         <Route path="/blogs" component={Blogs} exact />
         <Route path="/blogs/:id" component={BlogsForm} exact />
         <Route path="/blog/:id" component={BlogRender} exact />
+        <Route path="/logIn" component={LogIn} exact />
       </Switch>
     </div>
   );

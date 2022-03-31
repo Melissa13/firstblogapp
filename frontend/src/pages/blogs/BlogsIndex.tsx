@@ -90,8 +90,8 @@ const Blogs: FC = () => {
         console.log(slug);
         const HtmlText = row.published ? (
           <Link to={`/blog/${slug}`}>
-          <Button type="primary">Published</Button>
-        </Link>
+            <Button type="primary">Published</Button>
+          </Link>
         ) : (
           <Paragraph>Unpublished</Paragraph>
         );
