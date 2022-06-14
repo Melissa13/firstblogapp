@@ -1,12 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect } from 'react';
-import { Form, Input, Button, Layout, Checkbox, message, Typography } from 'antd';
+import { Form, Input, Button, Layout, Checkbox, Typography, Select } from 'antd';
 import axios from 'axios';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import './Users.css';
+import ApiClient from '../../services/backendCall';
 
+const UserClient = new ApiClient();
+const modelName = 'users';
 const { Title } = Typography;
 const { Content, Footer } = Layout;
+const { Option } = Select;
 type Params = {
   id: string;
 };
@@ -17,6 +21,7 @@ interface UserInfo {
   email: string;
   country: string;
   password: string;
+  role: string;
 }
 
 const UsersForm: FC = () => {
@@ -41,11 +46,11 @@ const UsersForm: FC = () => {
       ...values
     };
     if (isNew) {
-      createUser(userData).then(() => {
+      UserClient.createInstance(userData, modelName).then(() => {
         history.push('/users');
       });
     } else {
-      editUser(id, userData).then(() => {
+      UserClient.editInstance(id, userData, modelName).then(() => {
         history.push('/users');
       });
     }
@@ -98,6 +103,14 @@ const UsersForm: FC = () => {
             <Input.Password />
           </Form.Item>
 
+          <Form.Item name="role" label="Role" rules={[{ required: true }]}>
+            <Select placeholder="Select a role of this user" allowClear>
+              <Option value="Blogger">Blogger</Option>
+              <Option value="Admin">Admin</Option>
+              <Option value="other">other</Option>
+            </Select>
+          </Form.Item>
+
           <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
@@ -115,26 +128,5 @@ const UsersForm: FC = () => {
     </Layout>
   );
 };
-
-function createUser(userData: object) {
-  return axios
-    .post('http://localhost:8080/api/users', userData, {
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .catch(() => {
-      message.error('Something went wrong!');
-    });
-}
-
-function editUser(userId: string, userData: object) {
-  return axios
-    .put(`http://localhost:8080/api/users/${userId}`, userData, {
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.error('Something went wrong!', error);
-    });
-}
 
 export default UsersForm;

@@ -1,9 +1,12 @@
 import React, { useState, useEffect, FC } from 'react';
 import axios from 'axios';
-import { Layout, Button, Table, Typography, Modal, message } from 'antd';
+import { Layout, Button, Table, Typography, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import './Users.css';
+import ApiClient from '../../services/backendCall';
 
+const UserClient = new ApiClient();
+const modelName = 'users';
 const { Paragraph, Title } = Typography;
 const { Content, Footer } = Layout;
 
@@ -76,7 +79,7 @@ const Users: FC = () => {
   };
 
   const handleOk = async () => {
-    await deleteUser(singleUser.id, singleUser);
+    await UserClient.deleteInstance(singleUser.id, singleUser, modelName);
     fetchData();
     setIsModalVisible(false);
   };
@@ -111,11 +114,5 @@ const Users: FC = () => {
     </Layout>
   );
 };
-
-function deleteUser(userId: string, userData: object) {
-  return axios.delete(`http://localhost:8080/api/users/${userId}`, userData).catch(() => {
-    message.error('Something went wrong!');
-  });
-}
 
 export default Users;

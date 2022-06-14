@@ -11,7 +11,10 @@ import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './Blogs.css';
 import slugify from 'slugify';
+import ApiClient from '../../services/backendCall';
 
+const BlogClient = new ApiClient();
+const modelName = 'blogs';
 const { Title } = Typography;
 const { Content, Footer } = Layout;
 type Params = {
@@ -92,11 +95,11 @@ const BlogsForm: FC = () => {
     };
     setFormData(blogData);
     if (isNew) {
-      createBlog(blogData).then(() => {
+      BlogClient.createInstance(blogData, modelName).then(() => {
         message.success('New blog data saved', 3);
       });
     } else {
-      editBlog(id, blogData).then(() => {
+      BlogClient.editInstance(id, blogData, modelName).then(() => {
         // history.push('/blogs');
         message.success('blog data Update', 3);
       });
@@ -109,7 +112,7 @@ const BlogsForm: FC = () => {
       published: true
     };
     setFormData(blogData);
-    createUpdatePublishedBlog(id, formData).then(() => {
+    BlogClient.createUpdatePublishedBlog(id, formData).then(() => {
       message.success('Blog Published', 3);
     });
   };
@@ -120,7 +123,7 @@ const BlogsForm: FC = () => {
       published: false
     };
     setFormData(blogData);
-    deletePublishedBlog(id, formData).then(() => {
+    BlogClient.deletePublishedBlog(id, formData).then(() => {
       message.success('Blog Unpublished', 3);
     });
   };
@@ -200,48 +203,5 @@ const BlogsForm: FC = () => {
     </Layout>
   );
 };
-
-function createBlog(blogData: object) {
-  return axios
-    .post('http://localhost:8080/api/blogs', blogData, {
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .catch(() => {
-      message.error('Something went wrong!');
-    });
-}
-
-function editBlog(blogId: string, blogData: object) {
-  return axios
-    .put(`http://localhost:8080/api/blogs/${blogId}`, blogData, {
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.error('Something went wrong!', error);
-    });
-}
-
-function createUpdatePublishedBlog(blogId: string, blogData: object) {
-  return axios
-    .put(`http://localhost:8080/api/blogs/${blogId}/publish`, blogData, {
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.error('Something went wrong!', error);
-    });
-}
-
-function deletePublishedBlog(blogId: string, blogData: object) {
-  return axios
-    .put(`http://localhost:8080/api/blogs/${blogId}/unpublish`, blogData, {
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.error('Something went wrong!', error);
-    });
-}
 
 export default BlogsForm;

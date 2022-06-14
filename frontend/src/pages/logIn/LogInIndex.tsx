@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
-import { Button, Checkbox, Form, Input, Layout, message, Typography } from 'antd';
+import { Button, Checkbox, Form, Input, Layout, Typography } from 'antd';
 import './LogIn.css';
 import { Link, useHistory } from 'react-router-dom';
-import axios from 'axios';
+import ApiClient from '../../services/backendCall';
 
+const UserClient = new ApiClient();
 const { Content, Footer } = Layout;
 const { Title } = Typography;
 
@@ -13,8 +14,8 @@ const LogIn: FC = () => {
     const userData = {
       ...values
     };
-    validateUser(userData).then((result) => {
-      if(result?.data?.accessToken && result?.data?.refreshToken) {
+    UserClient.validateUser(userData).then((result) => {
+      if (result?.data?.accessToken && result?.data?.refreshToken) {
         localStorage.setItem('accessToken', JSON.stringify(result.data.accessToken));
         localStorage.setItem('refreshToken', JSON.stringify(result.data.refreshToken));
       }
@@ -69,15 +70,5 @@ const LogIn: FC = () => {
     </Layout>
   );
 };
-
-function validateUser(userData: object) {
-  return axios
-    .post('http://localhost:8080/api/users/login', userData, {
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .catch(() => {
-      message.error('Something went wrong!');
-    });
-}
 
 export default LogIn;

@@ -1,11 +1,14 @@
 /* eslint-disable no-console */
 import React, { useState, useEffect, FC } from 'react';
 import axios from 'axios';
-import { Layout, Button, Table, Typography, Modal, message } from 'antd';
+import { Layout, Button, Table, Typography, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import './Blogs.css';
 import slugify from 'slugify';
+import ApiClient from '../../services/backendCall';
 
+const BlogClient = new ApiClient();
+const modelName = 'blogs';
 const { Paragraph, Title } = Typography;
 const { Content, Footer } = Layout;
 
@@ -127,7 +130,7 @@ const Blogs: FC = () => {
   };
 
   const handleOk = async () => {
-    await deleteBlog(singleBlog.id, singleBlog);
+    await BlogClient.deleteInstance(singleBlog.id, singleBlog, modelName);
     fetchData();
     setIsModalVisible(false);
   };
@@ -162,11 +165,5 @@ const Blogs: FC = () => {
     </Layout>
   );
 };
-
-function deleteBlog(blogId: string, blogData: object) {
-  return axios.delete(`http://localhost:8080/api/blogs/${blogId}`, blogData).catch(() => {
-    message.error('Something went wrong!');
-  });
-}
 
 export default Blogs;

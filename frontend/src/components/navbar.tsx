@@ -22,6 +22,9 @@ const Navbar: FC = () => (
       <Menu.Item>
         <Link to="/logIn">Log in</Link>
       </Menu.Item>
+      <Menu.Item>
+        <Link to="/logOut">Log Out</Link>
+      </Menu.Item>
     </Menu>
   </Header>
 );
