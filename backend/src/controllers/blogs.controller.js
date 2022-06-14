@@ -38,13 +38,13 @@ module.exports = (BlogModel) => {
       const foundItem = await PublishedBlogModel.findOne({ where: { draftBlogId: id } });
       if (!foundItem) {
         const result = await PublishedBlogModel.create(updateBlog);
-        return res.send(result);
+        return res.send({ message: `${result}` });
       }
 
       const result = await PublishedBlogModel.update(updateBlog, {
         where: { id: foundItem.id }
       });
-      return res.send(result);
+      return res.send({ message: `${result}` });
     } catch (err) {
       return res.status(500).send({
         message: err.message || 'the model is ignoring you.'
@@ -65,7 +65,7 @@ module.exports = (BlogModel) => {
       const result = await PublishedBlogModel.destroy({
         where: { draftBlogId: id }
       });
-      return res.send(result);
+      return res.send({ message: `${result}` });
     } catch (err) {
       return res.status(500).send({
         message: err.message || 'the model is ignoring you.'
@@ -78,7 +78,7 @@ module.exports = (BlogModel) => {
     try {
       const result = await BlogModel.findOne({ where: { publishedUrl: req.params.publishedUrl } });
 
-      return res.send(result);
+      return res.send({ message: `${result}` });
     } catch (err) {
       return res.status(500).send({
         message: err.message || 'the model is ignoring you.'
