@@ -11,10 +11,9 @@ import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './Blogs.css';
 import slugify from 'slugify';
-import ApiClient from '../../services/backendCall';
+import ApiClient from '../../services/blogClient';
 
 const BlogClient = new ApiClient();
-const modelName = 'blogs';
 const { Title } = Typography;
 const { Content, Footer } = Layout;
 type Params = {
@@ -39,6 +38,7 @@ const EditorInput: FC<EditorInputProps> = (props: EditorInputProps) => {
   const { onChange, value = '' } = props;
   const blocksFromHTML = convertFromHTML(value);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  // root of the problem, solucion en un ref
   useEffect(() => {
     if (value) {
       setEditorState(
@@ -69,7 +69,7 @@ const EditorInput: FC<EditorInputProps> = (props: EditorInputProps) => {
 
 const BlogsForm: FC = () => {
   const history = useHistory();
-  const [form] = Form.useForm<BlogInfo>();
+  const [form] = Form.useForm<BlogInfo>(); // implementar algo asi en la funcion del editor
   const { id } = useParams<Params>();
   const isNew = id === 'create';
   const [formData, setFormData] = useState<BlogInfo>({ id: `0` });
@@ -95,11 +95,11 @@ const BlogsForm: FC = () => {
     };
     setFormData(blogData);
     if (isNew) {
-      BlogClient.createInstance(blogData, modelName).then(() => {
+      BlogClient.createRecord(blogData).then(() => {
         message.success('New blog data saved', 3);
       });
     } else {
-      BlogClient.editInstance(id, blogData, modelName).then(() => {
+      BlogClient.editRecord(id, blogData).then(() => {
         // history.push('/blogs');
         message.success('blog data Update', 3);
       });

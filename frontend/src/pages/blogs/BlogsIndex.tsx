@@ -5,10 +5,9 @@ import { Layout, Button, Table, Typography, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import './Blogs.css';
 import slugify from 'slugify';
-import ApiClient from '../../services/backendCall';
+import ApiClient from '../../services/blogClient';
 
 const BlogClient = new ApiClient();
-const modelName = 'blogs';
 const { Paragraph, Title } = Typography;
 const { Content, Footer } = Layout;
 
@@ -130,7 +129,7 @@ const Blogs: FC = () => {
   };
 
   const handleOk = async () => {
-    await BlogClient.deleteInstance(singleBlog.id, singleBlog, modelName);
+    await BlogClient.deleteRecord(singleBlog.id, singleBlog);
     fetchData();
     setIsModalVisible(false);
   };

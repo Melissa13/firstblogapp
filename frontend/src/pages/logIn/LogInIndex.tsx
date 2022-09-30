@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Button, Checkbox, Form, Input, Layout, Typography } from 'antd';
 import './LogIn.css';
 import { Link, useHistory } from 'react-router-dom';
-import ApiClient from '../../services/backendCall';
+import ApiClient from '../../services/userClient';
 
 const UserClient = new ApiClient();
 const { Content, Footer } = Layout;

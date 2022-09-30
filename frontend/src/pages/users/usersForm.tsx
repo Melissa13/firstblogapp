@@ -4,10 +4,9 @@ import { Form, Input, Button, Layout, Checkbox, Typography, Select } from 'antd'
 import axios from 'axios';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import './Users.css';
-import ApiClient from '../../services/backendCall';
+import ApiClient from '../../services/userClient';
 
 const UserClient = new ApiClient();
-const modelName = 'users';
 const { Title } = Typography;
 const { Content, Footer } = Layout;
 const { Option } = Select;
@@ -46,11 +45,11 @@ const UsersForm: FC = () => {
       ...values
     };
     if (isNew) {
-      UserClient.createInstance(userData, modelName).then(() => {
+      UserClient.createRecord(userData).then(() => {
         history.push('/users');
       });
     } else {
-      UserClient.editInstance(id, userData, modelName).then(() => {
+      UserClient.editRecord(id, userData).then(() => {
         history.push('/users');
       });
     }

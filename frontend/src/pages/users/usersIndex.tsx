@@ -3,10 +3,9 @@ import axios from 'axios';
 import { Layout, Button, Table, Typography, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import './Users.css';
-import ApiClient from '../../services/backendCall';
+import ApiClient from '../../services/userClient';
 
 const UserClient = new ApiClient();
-const modelName = 'users';
 const { Paragraph, Title } = Typography;
 const { Content, Footer } = Layout;
 
@@ -79,7 +78,7 @@ const Users: FC = () => {
   };
 
   const handleOk = async () => {
-    await UserClient.deleteInstance(singleUser.id, singleUser, modelName);
+    await UserClient.deleteRecord(singleUser.id, singleUser);
     fetchData();
     setIsModalVisible(false);
   };
